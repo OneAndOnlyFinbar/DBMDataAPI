@@ -3,6 +3,9 @@ RestAPI Designed to fetch DBM styled json data
 
 API Endpoint: `localhost:7000/api`
 
+Viewing version: 1.0.0
+Latest release: 1.0.0
+
 # Installation
 
 Once you have downloaded the main branch drag and drop the `index.js` file over to your bots main directory. Then install [the express node module](https://www.npmjs.com/package/express).
