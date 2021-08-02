@@ -52,7 +52,7 @@ data | string | The data name you are trying to fetch.
 
 Your final request url should look something like this: `localhost:7000/api?dataType=member&data=DATA_NAME`
 
-# Full Documentation
+# Advanced Documentation
 
 #### Base Info ####
 
