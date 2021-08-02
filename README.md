@@ -75,7 +75,3 @@ server | string | true | The ID of the server you are trying to fetch data from.
 #### Configs ####
 
 Soon (tokens, restrictions, port#, serverIP, etc)
-
-#### Other Information ####
-
-It is recommended but not required to host the project file inside of the bots main directory, **BUT NOTE:** It **MUST** be able to access the contents of the bots `./data/` folder to function properly.
