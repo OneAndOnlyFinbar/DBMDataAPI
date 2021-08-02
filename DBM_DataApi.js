@@ -17,14 +17,14 @@ app.get('/api', function (req, res) {
 
 
     if (queryDataType === 'global') {
-        const raw = JSON.parse(fs.readFileSync('../data/globals.json', 'utf8'));
+        const raw = JSON.parse(fs.readFileSync('./data/globals.json', 'utf8'));
         const foundData = raw[data];
         if(!foundData) return res.send('{"success" : false, "error" :' + `"Couldnt find global data: ${data}"}`);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
     if (queryDataType === 'server') {
-        const raw = JSON.parse(fs.readFileSync('../data/servers.json', 'utf8'));
+        const raw = JSON.parse(fs.readFileSync('./data/servers.json', 'utf8'));
         if(!raw[server]) return res.send('{"success" : false, "error" :' + `"Couldnt find server data: ${data} in server: ${server}"}`);
 
         const foundData = raw[server][data];
@@ -33,7 +33,7 @@ app.get('/api', function (req, res) {
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
     if (queryDataType === 'member') {
-        const raw = JSON.parse(fs.readFileSync('../data/players.json', 'utf8'));
+        const raw = JSON.parse(fs.readFileSync('./data/players.json', 'utf8'));
         if (!raw[member]) return res.send('{"success" : false, "error" :' + `"Couldnt find member data: ${data} for member: ${member}"}`);
 
         const foundData = raw[member][data];
