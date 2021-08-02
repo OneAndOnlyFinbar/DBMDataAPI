@@ -9,7 +9,7 @@ Latest release: 1.0.0
 
 # Installation
 
-Once you have downloaded the main branch drag and drop the `dataApi.js` file over to your bots main directory. Then install [the express node module](https://www.npmjs.com/package/express).
+Once you have downloaded the main branch unzip the `.zip` folder drag the entire folder over to your bots main directory. Then install [the express node module](https://www.npmjs.com/package/express).
 
 # Running
 
