@@ -36,8 +36,9 @@ Parameter | Type | Usage
 --------- | ---- | -----
 dataType | string | Type of data you are trying to fetch. In this case it will be `server`.
 data | string | The data name you are trying to fetch.
+server | string | The ID of the server you are trying to fetch data from.
 
-Your final request url should look something like this: `localhost:7000/api?dataType=server&data=DATA_NAME`
+Your final request url should look something like this: `localhost:7000/api?dataType=server&data=DATA_NAME&server=SERVER_ID`
 
 #### Getting Member Data ####
 
@@ -50,3 +51,25 @@ member | int | The ID of the member your trying to fetch data from.
 data | string | The data name you are trying to fetch.
 
 Your final request url should look something like this: `localhost:7000/api?dataType=member&data=DATA_NAME`
+
+# Full Documentation
+
+#### Base Info ####
+
+The API is built using express.js.
+
+#### Networking ####
+
+When starting, additional port forwarding may be required as to allow access from other computers. If required port forward to port 7000. Additionally you may need to change the IP address if chosen to host on different machine.
+
+#### All Query Parameters ####
+
+Parameter | Type | Required | Usage
+--------- | ---- | -------- | -----
+dataType | string | true | Type of data you are trying to fetch. In this case it will be `member`.
+member | int | true | The ID of the member your trying to fetch data from.
+data | string | true | The data name you are trying to fetch.
+server | string | true | The ID of the server you are trying to fetch data from.
+
+#### Configs ####
+Soon (tokens, restrictions, etc)
