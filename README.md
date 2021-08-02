@@ -23,3 +23,26 @@ dataType | string | Type of data you are trying to fetch. In this case it will b
 data | string | The data name you are trying to fetch.
 
 Your final request url should look something like this: `localhost:7000/api?dataType=global&data=DATA_NAME`
+
+#### Getting Server Data ####
+
+To get a server data use the following query parameters.
+
+Parameter | Type | Usage
+--------- | ---- | -----
+dataType | string | Type of data you are trying to fetch. In this case it will be `server`.
+data | string | The data name you are trying to fetch.
+
+Your final request url should look something like this: `localhost:7000/api?dataType=server&data=DATA_NAME`
+
+#### Getting Member Data ####
+
+To get a member data use the following query parameters.
+
+Parameter | Type | Usage
+--------- | ---- | -----
+dataType | string | Type of data you are trying to fetch. In this case it will be `member`.
+member | int | The ID of the member your trying to fetch data from.
+data | string | The data name you are trying to fetch.
+
+Your final request url should look something like this: `localhost:7000/api?dataType=member&data=DATA_NAME`
