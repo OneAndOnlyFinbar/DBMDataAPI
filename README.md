@@ -3,9 +3,9 @@ RestAPI Designed to fetch DBM styled json data
 
 API Endpoint: `localhost:7000/api`
 
-Viewing version: 1.0.0
+Viewing version: 2.0.0
 <br>
-Latest release: 1.0.0
+Latest release: 2.0.0
 
 # Installation
 
@@ -57,7 +57,7 @@ Your final request url should look something like this: `localhost:7000/api?data
 #### Base Info ####
 
 The API is built using express.js.
-When running `index.js` the API will start and listen at port: `7000`.
+When running `index.js` the API will start and listen at port: `7000` by default. This can be changed and configured, see [here](http://github.com) for more info.
 
 #### Networking ####
 
@@ -71,7 +71,18 @@ dataType | string | true | Type of data you are trying to fetch. In this case it
 member | int | true | The ID of the member your trying to fetch data from.
 data | string | true | The data name you are trying to fetch.
 server | string | true | The ID of the server you are trying to fetch data from.
+key | string | false | API Key, if one is required.
 
 #### Configs ####
 
-Soon (tokens, restrictions, port#, serverIP, etc)
+##### API Keys #####
+We allow built in authentication via API keys. To enable them:
+
+1. Go to line 14 (14:10) and set the constant value `requireKey` to true.
+2. Then go to line 15 (15:10) and add a value to the array. An example would be: `const apiKeys = ['API_KEY'];` which would add the API key `API_KEY`.
+
+**note:** When an API key is required you must provide the `key` parameter in the request url.
+
+##### Custom Port Number #####
+We have a built in method to change the port number the api runs on. To set it:
+1. Go to line 22 (22:17) and change the null value to your port number.
