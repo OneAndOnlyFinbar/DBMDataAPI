@@ -2,7 +2,27 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 
+//################
+//##CONFIGUTAION##
+//################
+
+//############
+//##API KEYS##
+//############
+//To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
+
+    const requireKey = false;
+    const apiKeys = [];
+
+//###############
+//##CUSTOM PORT##
+//###############
+//To set a custom port number set the null value below to the desired port.
+
+    const port = null || 7000;
+
 app.get('/api', function (req, res) {
+    if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send('{"success" : false, "error" : "Invalid API key."}');
 
     const queryDataType = req.query.dataType || null;
     const data = req.query.data || null;
@@ -23,6 +43,7 @@ app.get('/api', function (req, res) {
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
+
     if (queryDataType === 'server') {
         const raw = JSON.parse(fs.readFileSync('./data/servers.json', 'utf8'));
         if(!raw[server]) return res.send('{"success" : false, "error" :' + `"Couldnt find server data: ${data} in server: ${server}"}`);
@@ -32,6 +53,7 @@ app.get('/api', function (req, res) {
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
+
     if (queryDataType === 'member') {
         const raw = JSON.parse(fs.readFileSync('./data/players.json', 'utf8'));
         if (!raw[member]) return res.send('{"success" : false, "error" :' + `"Couldnt find member data: ${data} for member: ${member}"}`);
@@ -42,5 +64,5 @@ app.get('/api', function (req, res) {
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
 })
-app.listen(7000);
-console.log('Starting DBM Data API at port 7000');
+app.listen(port);
+console.log(`Starting DBM Data API at port ${port}`);
