@@ -84,5 +84,5 @@ We allow built in authentication via API keys. To enable them:
 **note:** When an API key is required you must provide the `key` parameter in the request url.
 
 ##### Custom Port Number #####
-We have a built in method to change the port number the api runs on. To set it:
+To update the port number your api is running on:
 1. Go to line 22 (22:17) and change the null value to your port number.
