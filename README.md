@@ -57,7 +57,7 @@ Your final request url should look something like this: `localhost:7000/api?data
 #### Base Info ####
 
 The API is built using express.js.
-When running `index.js` the API will start and listen at port: `7000` by default. This can be changed and configured, see [here](http://github.com) for more info.
+When running `index.js` the API will start and listen at port: `7000` by default. This can be changed and configured, read below for more info and instruction.
 
 #### Networking ####
 
