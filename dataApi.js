@@ -11,15 +11,15 @@ const fs = require('fs');
 //############
 //To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
 
-    const requireKey = false;
-    const apiKeys = [];
+const requireKey = false;
+const apiKeys = [];
 
 //###############
 //##CUSTOM PORT##
 //###############
 //To set a custom port number set the null value below to the desired port.
 
-    const port = null || 7000;
+const port = null || 7000;
 
 app.get('/api', function (req, res) {
     if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send('{"success" : false, "error" : "Invalid API key."}');
