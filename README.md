@@ -81,8 +81,10 @@ We allow built in authentication via API keys. To enable them:
 1. Go to line 14 (14:10) and set the constant value `requireKey` to true.
 2. Then go to line 15 (15:10) and add a value to the array. An example would be: `const apiKeys = ['API_KEY'];` which would add the API key `API_KEY`.
 
-**note:** When an API key is required you must provide the `key` parameter in the request url.
+**Note:** When an API key is required you must provide the `key` parameter in the request url.
 
 ##### Custom Port Number #####
 To update the port number your api is running on:
-1. Go to line 22 (22:17) and change the null value to your port number.
+1. Go to line 22 (22:17) and change the `null` value to your port number.
+
+If you want to reset it set the changed port number to `null`
