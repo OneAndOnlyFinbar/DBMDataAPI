@@ -76,12 +76,14 @@ key | string | false | API Key, if one is required.
 #### Configs ####
 
 ##### API Keys #####
-We allow built in authentication via API keys. To enable them:
+To enable and require API keys:
 
 1. Go to line 14 (14:10) and set the constant value `requireKey` to true.
-2. Then go to line 15 (15:10) and add a value to the array. An example would be: `const apiKeys = ['API_KEY'];` which would add the API key `API_KEY`.
+2. Then go to line 15 (15:10) and add a value to the `apiKeys` array. An example would be: `const apiKeys = ['API_KEY'];` which would add the API key `API_KEY`.
 
-**Note:** When an API key is required you must provide the `key` parameter in the request url.
+**Note:** 
+When an API key is required you must provide the `key` parameter in the request url. 
+All items in the `apiKeys` array must be valid strings.
 
 ##### Custom Port Number #####
 To update the port number your api is running on:
