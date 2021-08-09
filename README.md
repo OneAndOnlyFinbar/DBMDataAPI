@@ -9,7 +9,7 @@ Latest release: 2.1.0
 
 # Installation
 
-Once you have downloaded the main branch unzip the `DBMDataAPI-main.zip` folder drag the unzipped `DBMDataAPI-main` folder over to your bots main directory. Then install [the express node module](https://www.npmjs.com/package/express).
+Once you have downloaded the main branch unzip the `DBMDataAPI-main.zip` folder drag the unzipped `DBMDataAPI-main` folder over to your bots main directory. Then install [the express node module](https://www.npmjs.com/package/express) by running `npm i express` in your console.
 
 # Running
 
