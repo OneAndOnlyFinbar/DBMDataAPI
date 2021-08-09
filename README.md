@@ -68,7 +68,7 @@ When starting, additional port forwarding may be required as to allow access fro
 Parameter | Type | Required | Usage
 --------- | ---- | -------- | -----
 dataType | string | true | Type of data you are trying to fetch. In this case it will be `member`.
-member | int | true | The ID of the member your trying to fetch data from.
+member | string | true | The ID of the member your trying to fetch data from.
 data | string | true | The data name you are trying to fetch.
 server | string | true | The ID of the server you are trying to fetch data from.
 key | string | false | API Key, if one is required.
