@@ -56,7 +56,7 @@ Your final request url should look something like this: `localhost:7000/api?data
 
 #### Base Info ####
 
-The API is built using express.js.
+The API is built using express.js v4.<br>
 When running `index.js` the API will start and listen at port: `7000` by default. This can be changed and configured, read below for more information and instructions.
 
 #### Networking ####
@@ -72,6 +72,14 @@ member | string | true | The ID of the member your trying to fetch data from.
 data | string | true | The data name you are trying to fetch.
 server | string | true | The ID of the server you are trying to fetch data from.
 key | string | false | API Key, if one is required.
+
+#### All Response Parameters ####
+
+Parameter | Type | Usage
+--------- | ---- | -----
+success | bool | Whether the request was a success or not. Will either return `success` or `error`.
+error | string | Error defined in text, if one was encountered.
+data | string | The data fetched.
 
 #### Configs ####
 
