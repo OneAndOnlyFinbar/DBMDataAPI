@@ -30,6 +30,7 @@ const port = null || 7000;
 if(!port) return console.log('WARNING: No port number specified.');
 
 //################################################################################################################################################
+
 app.get('/api', function (req, res) {
     if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send('{"success" : false, "error" : "Invalid API key."}');
 
@@ -73,5 +74,6 @@ app.get('/api', function (req, res) {
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
 })
+
 app.listen(port);
 console.log(`Starting DBM Data API at port ${port}`);
