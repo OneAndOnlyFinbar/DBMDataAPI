@@ -1,0 +1,34 @@
+{
+  "0001" : {
+    "_COMMENT" : "Invalid API Key Error.",
+    "error_text" : "Invalid API Key Provided."
+  },
+  "0002" : {
+    "_COMMENT" : "No datatype parameter.",
+    "error_text" : "No dataType parameter provided."
+  },
+  "0003" : {
+    "_COMMENT" : "No data parameter.",
+    "error_text" : "No data parameter provided."
+  },
+  "0004" : {
+    "_COMMENT" : "Invalid dataType parameter.",
+    "error_text" : "Invalid dataType parameter."
+  },
+  "0005" : {
+    "_COMMENT" : "No member parameter provided.",
+    "error_text" : "No member parameter provided."
+  },
+  "0006" : {
+    "_COMMENT" : "Couldn't find global data",
+    "error_text" : "Couldn't find global data: "
+  },
+  "0007" : {
+    "_COMMENT" : "Couldn't find server data",
+    "error_text" : "Couldn't find server data: "
+  },
+  "0008" : {
+    "_COMMENT" : "Couldn't find member data",
+    "error_text" : "Couldn't find member data: "
+  }
+}

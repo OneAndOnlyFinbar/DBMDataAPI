@@ -3,9 +3,9 @@ RestAPI Designed to fetch DBM styled json data
 
 API Endpoint: `localhost:7000/api`
 
-Viewing version: 2.1.0
+Viewing version: 2.2.0
 <br>
-Latest release: 2.1.0
+Latest release: 2.2.0
 
 # Installation
 
@@ -81,7 +81,7 @@ success | bool | Whether the request was a success or not. Will either return `s
 error | string | Error defined in text, if one was encountered.
 data | string | The data fetched.
 
-#### Configs ####
+# Configs
 
 ##### API Keys #####
 To enable and require API keys:
@@ -98,3 +98,15 @@ To update the port number your api is running on:
 1. Go to line 22 (22:17) and change the `null` value to your port number.
 
 If you want to reset it set the changed port number to `null`
+
+##### Custom Error Codes #####
+To set custom error messages do the following:
+1. Navigate to the error json file (`./configs/errors.json`)
+2. Find error code and adjust the `error_text` field accordingly.
+
+The `errors.json` allows you to set custom error codes. When looking for the correct error to update look at each errors `_COMMENT` field, this will give a brief definition of what that error code is.
+
+##### Exit On Critical Error #####
+There is an option to opt out of the program returning upon encountering a program breaking error. It is not suggested to ever set this option to `false` unless you are testing and want to make dynamic/substantial changes to the api. The default value for this option is `true`. When set to `false` it will ignore any program breaking errors. This option can be found in the `main.json` file (`./configs/main.json`).
+
+**Note: DO NOT OPEN ANY ISSUES WHEN THIS OPTION IS SET TO `false`**
