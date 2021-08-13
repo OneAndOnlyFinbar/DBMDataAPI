@@ -3,9 +3,9 @@ RestAPI Designed to fetch DBM styled json data
 
 API Endpoint: `localhost:7000/api`
 
-Viewing version: 2.1.0
+Viewing version: 2.1.2
 <br>
-Latest release: 2.1.0
+Latest release: 2.1.2
 
 # Installation
 
@@ -98,3 +98,10 @@ To update the port number your api is running on:
 1. Go to line 22 (22:17) and change the `null` value to your port number.
 
 If you want to reset it set the changed port number to `null`
+
+##### Custom Error Codes #####
+To set custom error messages do the following:
+1. Navigate to the error json file (`./configs/errors.json`)
+2. Find error code and adjust the `error_text` field accordingly.
+
+The `errors.json` allows you to set custom error codes. When looking for the correct error to update look at each errors `_COMMENT` field, this will give a brief definition of what that error code is.
