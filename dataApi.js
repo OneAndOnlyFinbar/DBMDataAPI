@@ -14,8 +14,8 @@ const errors = require('./configs/errors.json');
 //################################################################################################################################################
 //To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
 
-const requireKey = true;
-const apiKeys = ['1'];
+const requireKey = false;
+const apiKeys = [];
 
 if(requireKey && !apiKeys || requireKey && apiKeys.length === 0) return console.log('WARNING: Requiring API keys without any valid API keys.');
 
