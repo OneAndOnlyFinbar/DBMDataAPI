@@ -3,8 +3,11 @@ const app = express();
 const fs = require('fs');
 
 try {(JSON.parse(JSON.stringify(require('./configs/errors.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing errors.json config. Please validate JSON.');}
+try {(JSON.parse(JSON.stringify(require('./configs/main.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing main.json config. Please validate JSON.');}
 
 const errors = require('./configs/errors.json');
+const config = require('./configs/main.json');
+
 //################################################################################################################################################
 //##################################################################CONFIGUTAION##################################################################
 //################################################################################################################################################
@@ -14,13 +17,17 @@ const errors = require('./configs/errors.json');
 //################################################################################################################################################
 //To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
 
-const requireKey = false;
-const apiKeys = [];
+const requireKey = true;
+const apiKeys = ['1'];
 
-if(requireKey && !apiKeys || requireKey && apiKeys.length === 0) return console.log('WARNING: Requiring API keys without any valid API keys.');
+if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError === false){
+    console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
+}
 
 for(let i = 0; i < apiKeys.length; i++){
-    if(typeof apiKeys[i] !== 'string') return console.log('WARNING: All API keys must be a type of string.');
+    if(typeof apiKeys[i] !== 'string' && config.ExitOnCriticalError) return console.log('WARNING: All API keys must be a type of string.');else if(typeof apiKeys[i] !== 'string' && config.ExitOnCriticalError === false){
+        console.log('WARNING: All API keys must be a type of string, Continuing');
+    }
 }
 
 //################################################################################################################################################
@@ -30,7 +37,9 @@ for(let i = 0; i < apiKeys.length; i++){
 
 const port = null || 7000;
 
-if(!port) return console.log('WARNING: No port number specified.');
+if(!port && config.ExitOnCriticalError) return console.log('WARNING: No port number specified.');else if(!port && config.ExitOnCriticalError === false){
+    console.log('WARNING: No port number specified, Continuing');
+}
 
 //################################################################################################################################################
 
