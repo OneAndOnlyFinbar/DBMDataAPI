@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-const errors = require('./configs/errors.json');
 
+try {(JSON.parse(JSON.stringify(require('./configs/errors.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing errors.json config. Please validate JSON.');}
+
+const errors = require('./configs/errors.json');
 //################################################################################################################################################
 //##################################################################CONFIGUTAION##################################################################
 //################################################################################################################################################
