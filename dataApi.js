@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const errors = require('./configs/errors.json');
 
 //################################################################################################################################################
 //##################################################################CONFIGUTAION##################################################################
@@ -11,8 +12,8 @@ const fs = require('fs');
 //################################################################################################################################################
 //To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
 
-const requireKey = false;
-const apiKeys = [];
+const requireKey = true;
+const apiKeys = ['1'];
 
 if(requireKey && !apiKeys || requireKey && apiKeys.length === 0) return console.log('WARNING: Requiring API keys without any valid API keys.');
 
@@ -32,7 +33,7 @@ if(!port) return console.log('WARNING: No port number specified.');
 //################################################################################################################################################
 
 app.get('/api', function (req, res) {
-    if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send('{"success" : false, "error" : "Invalid API key."}');
+    if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send(`{"success" : false, "error" : "${errors['0001']['error_text']}"}`);
 
     const queryDataType = req.query.dataType || null;
     const data = req.query.data || null;
@@ -40,36 +41,36 @@ app.get('/api', function (req, res) {
     const server = req.query.server || null;
 
     // Return if parameters are invalid or doesn't exist
-    if (!queryDataType) return res.send('{"success" : false, "error" : "No dataType parameter provided."}');
-    if (!data) return res.send('{"success" : false, "error" : "No data parameter provided."}');
-    if (queryDataType !== 'server' && queryDataType !== 'member' && queryDataType !== 'global') return res.send('{"success" : false, "error" : "Invalid dataType parameter."}');
-    if (queryDataType === 'member' && !member) return res.send('{"success" : false, "error" : "No member parameter provided."}');
+    if (!queryDataType) return res.send(`{"success" : false, "error" : "${errors['0002']['error_text']}"}`);
+    if (!data) return res.send(`{"success" : false, "error" : "${errors['0003']['error_text']}"}`);
+    if (queryDataType !== 'server' && queryDataType !== 'member' && queryDataType !== 'global') return res.send(`{"success" : false, "error" : "${errors['0004']['error_text']}"}`);
+    if (queryDataType === 'member' && !member) return res.send(`{"success" : false, "error" : "${errors['0005']['error_text']}"}`);
 
 
     if (queryDataType === 'global') {
         const raw = JSON.parse(fs.readFileSync('./data/globals.json', 'utf8'));
         const foundData = raw[data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"Couldnt find global data: ${data}"}`);
+        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0002']['error_text']}: ${data}"}`);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
 
     if (queryDataType === 'server') {
         const raw = JSON.parse(fs.readFileSync('./data/servers.json', 'utf8'));
-        if(!raw[server]) return res.send('{"success" : false, "error" :' + `"Couldnt find server data: ${data} in server: ${server}"}`);
+        if(!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
 
         const foundData = raw[server][data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"Couldnt find server data: ${data} in server: ${server}"}`);
+        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
 
     if (queryDataType === 'member') {
         const raw = JSON.parse(fs.readFileSync('./data/players.json', 'utf8'));
-        if (!raw[member]) return res.send('{"success" : false, "error" :' + `"Couldnt find member data: ${data} for member: ${member}"}`);
+        if (!raw[member]) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
 
         const foundData = raw[member][data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"Couldnt find member data: ${data} for member: ${member}"}`);
+        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
