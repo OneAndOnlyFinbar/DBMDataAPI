@@ -13,7 +13,7 @@ Once you have downloaded the main branch unzip the `DBMDataAPI-main.zip` folder 
 
 # Running
 
-Once installed properly navigate to the `DBMDataApi` folder and run `node dataApi.js` to start the api.
+Once installed properly navigate to the `DBMDataApi-main` folder and run `node dataApi.js` to start the api.
 
 # Light Documentation
 
