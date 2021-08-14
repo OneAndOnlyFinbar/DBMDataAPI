@@ -109,4 +109,4 @@ The `errors.json` allows you to set custom error codes. When looking for the cor
 ##### Exit On Critical Error #####
 There is an option to opt out of the program returning upon encountering a program breaking error. It is not suggested to ever set this option to `false` unless you are testing and want to make dynamic/substantial changes to the api. The default value for this option is `true`. When set to `false` it will ignore any program breaking errors. This option can be found in the `main.json` file (`./configs/main.json`).
 
-**Note: DO NOT OPEN ANY ISSUES WHEN THIS OPTION IS SET TO `false`**
+It is worth noting if this is disabled your process will most likely crash.
