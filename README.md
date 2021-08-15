@@ -3,9 +3,9 @@ RestAPI Designed to fetch DBM styled json data
 
 API Endpoint: `localhost:7000/api`
 
-Viewing version: 2.2.0
+Viewing version: 2.3.0
 <br>
-Latest release: 2.2.0
+Latest release: 2.3.0
 
 # Installation
 
