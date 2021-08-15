@@ -110,3 +110,11 @@ The `errors.json` allows you to set custom error codes. When looking for the cor
 There is an option to opt out of the program returning upon encountering a program breaking error. It is not suggested to ever set this option to `false` unless you are testing and want to make dynamic/substantial changes to the api. The default value for this option is `true`. When set to `false` it will ignore any program breaking errors. This option can be found in the `main.json` file (`./configs/main.json`).
 
 It is worth noting if your process requires this to be disabled to start you have a fatal error and your code will not work until said error is fixed.
+
+##### Logging #####
+
+To enable logging go to the main config file (`./configs/main.json`), set `EnableLogger` to true.
+If you would like to enable logging requests to console additionaly set `LogToConsole` to true.
+If yo uwould like to log requests in a file set `LogToFile` to true.
+
+Default logging file is `./logs/logs.txt`. Logging includes the date of the request, IP of the requester. Type of data requested. Data requested. Data returned.

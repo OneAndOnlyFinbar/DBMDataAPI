@@ -17,8 +17,8 @@ const config = require('./configs/main.json');
 //################################################################################################################################################
 //To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
 
-const requireKey = true;
-const apiKeys = ['1'];
+const requireKey = false;
+const apiKeys = [];
 
 if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError === false){
     console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
@@ -43,13 +43,15 @@ if(!port && config.ExitOnCriticalError) return console.log('WARNING: No port num
 
 //################################################################################################################################################
 
-app.get('/api', function (req, res) {
-    if(requireKey === true && !apiKeys.includes(req.query.key)) return res.send(`{"success" : false, "error" : "${errors['0001']['error_text']}"}`);
+app.get('/api', async function (req, res) {
+    if (requireKey === true && !apiKeys.includes(req.query.key)) return res.send(`{"success" : false, "error" : "${errors['0001']['error_text']}"}`);
 
     const queryDataType = req.query.dataType || null;
     const data = req.query.data || null;
     const member = req.query.member || null;
     const server = req.query.server || null;
+    const ip = req.headers['x-forwarded-for'] || req.ip || 'Unknown';
+    const enableLogger = config.EnableLogger;
 
     // Return if parameters are invalid or doesn't exist
     if (!queryDataType) return res.send(`{"success" : false, "error" : "${errors['0002']['error_text']}"}`);
@@ -57,21 +59,28 @@ app.get('/api', function (req, res) {
     if (queryDataType !== 'server' && queryDataType !== 'member' && queryDataType !== 'global') return res.send(`{"success" : false, "error" : "${errors['0004']['error_text']}"}`);
     if (queryDataType === 'member' && !member) return res.send(`{"success" : false, "error" : "${errors['0005']['error_text']}"}`);
 
-
     if (queryDataType === 'global') {
         const raw = JSON.parse(fs.readFileSync('../data/globals.json', 'utf8'));
         const foundData = raw[data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0006']['error_text']}: ${data}"}`);
+        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0006']['error_text']}: ${data}"}`);
+
+        let log = `${new Date().toLocaleString()} - Global data ${data} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+
+        if (enableLogger === true) await logManager(log);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
 
     if (queryDataType === 'server') {
         const raw = JSON.parse(fs.readFileSync('../data/servers.json', 'utf8'));
-        if(!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
+        if (!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
 
         const foundData = raw[server][data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
+        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
+
+        let log = `${new Date().toLocaleString()} - Server data ${data} in server ${server} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+
+        if (enableLogger === true) await logManager(log);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
@@ -81,11 +90,23 @@ app.get('/api', function (req, res) {
         if (!raw[member]) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
 
         const foundData = raw[member][data];
-        if(!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
+        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
+
+        let log = `${new Date().toLocaleString()} - Member data ${data} for member ${member} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+
+        if (enableLogger === true) await logManager(log);
 
         return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
     }
-})
+    async function logManager(data) {
+        if(config.LogToConsole) console.log(data);
 
+        if(config.LogToFile === true){
+            fs.appendFile('./logs/logs.txt', (`\n` + data), function (err) {
+                if(err) console.log(`WARNING: Error while appending to log file. Err: \n ${err}`);
+            })
+        }
+    }
+})
 app.listen(port);
 console.log(`Starting DBM Data API at port ${port}`);
