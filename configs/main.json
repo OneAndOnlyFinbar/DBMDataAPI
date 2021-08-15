@@ -1,3 +1,6 @@
 {
-  "ExitOnCriticalError" : true
+  "ExitOnCriticalError" : false,
+  "EnableLogger" : true,
+  "LogToConsole" : true,
+  "LogToFile" : true
 }
