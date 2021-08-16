@@ -1,10 +1,18 @@
+//Prerequisites
 const express = require('express');
 const app = express();
 const fs = require('fs');
 
+//Config validation
 try {(JSON.parse(JSON.stringify(require('./configs/errors.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing errors.json config. Please validate JSON.');}
 try {(JSON.parse(JSON.stringify(require('./configs/main.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing main.json config. Please validate JSON.');}
 
+//Data file validation
+try {(JSON.parse(JSON.stringify(require('../data/servers.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing servers.json data file. Please validate JSON.');}
+try {(JSON.parse(JSON.stringify(require('../data/globals.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing globals.json data file. Please validate JSON.');}
+try {(JSON.parse(JSON.stringify(require('../data/players.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing players.json data file. Please validate JSON.');}
+
+//Config definitions
 const errors = require('./configs/errors.json');
 const config = require('./configs/main.json');
 
@@ -44,8 +52,10 @@ if(!port && config.ExitOnCriticalError) return console.log('WARNING: No port num
 //################################################################################################################################################
 
 app.get('/api', async function (req, res) {
-    if (requireKey === true && !apiKeys.includes(req.query.key)) return res.send(`{"success" : false, "error" : "${errors['0001']['error_text']}"}`);
+    //Check API key validity
+    if (requireKey === true && !apiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
 
+    //Gather data
     const queryDataType = req.query.dataType || null;
     const data = req.query.data || null;
     const member = req.query.member || null;
@@ -53,51 +63,58 @@ app.get('/api', async function (req, res) {
     const ip = req.headers['x-forwarded-for'] || req.ip || 'Unknown';
     const enableLogger = config.EnableLogger;
 
-    // Return if parameters are invalid or doesn't exist
-    if (!queryDataType) return res.send(`{"success" : false, "error" : "${errors['0002']['error_text']}"}`);
-    if (!data) return res.send(`{"success" : false, "error" : "${errors['0003']['error_text']}"}`);
-    if (queryDataType !== 'server' && queryDataType !== 'member' && queryDataType !== 'global') return res.send(`{"success" : false, "error" : "${errors['0004']['error_text']}"}`);
-    if (queryDataType === 'member' && !member) return res.send(`{"success" : false, "error" : "${errors['0005']['error_text']}"}`);
+    // Return if parameters are invalid or dont exist
+    if (!queryDataType) return res.json({success: false, error: errors['0002']['error_text']})
+    if (!data) return res.json({success: false, error: errors['0003']['error_text']})
+    if (queryDataType !== 'server' && queryDataType !== 'member' && queryDataType !== 'global') return res.json({success : false, error : errors['0004']['error_text']});
+    if (queryDataType === 'member' && !member) return res.json({success: false, error: errors['0005']['error_text']})
 
+    //Global data
     if (queryDataType === 'global') {
         const raw = JSON.parse(fs.readFileSync('../data/globals.json', 'utf8'));
+        if (!raw[data]) return res.json({success: false, error: errors['0006']['error_text'] + data})
+
         const foundData = raw[data];
-        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0006']['error_text']}: ${data}"}`);
+        if (!foundData) return res.json({success: false, error: errors['0006']['error_text'] + data})
 
         let log = `${new Date().toLocaleString()} - Global data ${data} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
         if (enableLogger === true) await logManager(log);
 
-        return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
+        return res.json({success : true, data : foundData.toString()});
     }
 
+    //Server data
     if (queryDataType === 'server') {
         const raw = JSON.parse(fs.readFileSync('../data/servers.json', 'utf8'));
         if (!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
 
         const foundData = raw[server][data];
-        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
+        if (!foundData) return res.json({success: false, error: errors['0007']['error_text'] + ': ' + data + ' in server: ' + server});
 
         let log = `${new Date().toLocaleString()} - Server data ${data} in server ${server} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
         if (enableLogger === true) await logManager(log);
 
-        return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
+        return res.json({success : true, data : foundData.toString()});
     }
 
+    //Member data
     if (queryDataType === 'member') {
         const raw = JSON.parse(fs.readFileSync('../data/players.json', 'utf8'));
-        if (!raw[member]) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
+        if (!raw[member]) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
 
         const foundData = raw[member][data];
-        if (!foundData) return res.send('{"success" : false, "error" :' + `"${errors['0008']['error_text']}: ${data} for member: ${member}"}`);
+        if (!foundData) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
 
         let log = `${new Date().toLocaleString()} - Member data ${data} for member ${member} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
         if (enableLogger === true) await logManager(log);
 
-        return res.send(`{"success" : true, "data" : "${foundData.toString()}"}`);
+        return res.json({success : true, data : foundData.toString()});
     }
+
+    //Log manager function. Do not directly edit this, instead enable/disable in configs/main.json
     async function logManager(data) {
         if(config.LogToConsole) console.log(data);
 
@@ -108,5 +125,7 @@ app.get('/api', async function (req, res) {
         }
     }
 })
+
+//Start API
 app.listen(port);
 console.log(`Starting DBM Data API at port ${port}`);
