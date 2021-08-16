@@ -5,7 +5,7 @@ API Endpoint: `localhost:7000/api`
 
 Viewing version: 2.3.0
 <br>
-Latest release: 2.3.0
+Latest release: 2.4.0
 
 # Installation
 
