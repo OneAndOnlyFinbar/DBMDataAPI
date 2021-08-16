@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 
-//Config Validation
+//Config validation
 try {(JSON.parse(JSON.stringify(require('./configs/errors.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing errors.json config. Please validate JSON.');}
 try {(JSON.parse(JSON.stringify(require('./configs/main.json'))));} catch (error) {if (error) return console.log('WARNING: Fatal error encountered while parsing main.json config. Please validate JSON.');}
 
