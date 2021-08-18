@@ -21,18 +21,13 @@ const config = require('./configs/main.json');
 //################################################################################################################################################
 
 //################################################################################################################################################
-//#################################################################Whitelisted IPs################################################################
+//#################################################################WHITELISTED IPS################################################################
 //################################################################################################################################################
 //To limit requests to certain IPs change the value of the constant below to true then add a string to the WHITELISTED_IPS array.
+//If you are hosting the bot on the same machine the data API is using use  ::1  for your IP address.
 
 const forceWhitelistedIps = false;
-WHITELISTED_IPS = [];
-
-let ip = req.headers['x-forwarded-for'] || req.ip || null;
-
-if(forceWhitelistedIps && !WHITELISTED_IPS.includes(ip)){
-    return res.json({success: false, error: errors['0009']['error_text']});
-}
+const WHITELISTED_IPS = [];
 
 //################################################################################################################################################
 //####################################################################API KEYS####################################################################
@@ -69,7 +64,17 @@ app.get('/api', async function (req, res) {
     //Check API key validity
     if (requireKey === true && !apiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
 
-    //Gather data
+    //Check If IP is whitelisted
+    let ipCheck = req.headers['x-forwarded-for'] || req.ip || null;
+
+    //Check and correct for subnet prefix
+    if(ipCheck.startsWith('::ffff:')) ipCheck = ipCheck.slice(7);
+
+    if(forceWhitelistedIps && !WHITELISTED_IPS.includes(ipCheck)){
+        return res.json({success: false, error: errors['0009']['error_text']});
+    }
+
+    //Gather parameters
     const queryDataType = req.query.dataType || null;
     const data = req.query.data || null;
     const member = req.query.member || null;
