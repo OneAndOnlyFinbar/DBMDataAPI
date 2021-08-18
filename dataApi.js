@@ -31,7 +31,7 @@ whitelistedIps = [];
 let ip = req.headers['x-forwarded-for'] || req.ip || null;
 
 if(forceWhitelistedIps && !whitelistedIps.includes(ip)){
-    return
+    return res.json({success: false, error: errors['0009']['error_text']});
 }
 
 //################################################################################################################################################
