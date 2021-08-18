@@ -23,14 +23,14 @@ const config = require('./configs/main.json');
 //################################################################################################################################################
 //#################################################################Whitelisted IPs################################################################
 //################################################################################################################################################
-//To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
+//To limit requests to certain IPs change the value of the constant below to true then add a string to the WHITELISTED_IPS array.
 
 const forceWhitelistedIps = false;
-whitelistedIps = [];
+WHITELISTED_IPS = [];
 
 let ip = req.headers['x-forwarded-for'] || req.ip || null;
 
-if(forceWhitelistedIps && !whitelistedIps.includes(ip)){
+if(forceWhitelistedIps && !WHITELISTED_IPS.includes(ip)){
     return res.json({success: false, error: errors['0009']['error_text']});
 }
 
