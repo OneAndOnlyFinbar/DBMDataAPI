@@ -3,7 +3,6 @@ RestAPI Designed to fetch DBM styled json data.
 
 API Endpoint: `localhost:7000/api`
 
-Viewing version: 2.4.0
 
 # Installation
 
@@ -13,7 +12,7 @@ Once you have downloaded the main branch unzip the `DBMDataAPI-main.zip` folder 
 
 Once installed properly navigate to the `DBMDataApi-main` folder and run `node dataApi.js` to start the api.
 
-# Light Documentation
+# Basic Usage
 
 #### Getting Global Data ####
 
@@ -84,8 +83,8 @@ data | string | The data fetched.
 ##### API Keys #####
 To enable and require API keys:
 
-1. Go to line 14 (14:10) and set the constant value `requireKey` to true.
-2. Then go to line 15 (15:10) and add a value to the `apiKeys` array. An example would be: `const apiKeys = ['API_KEY'];` which would add the API key `API_KEY`.
+1. Go to line 37 and set the constant value `requireKey` to true.
+2. Then go to line 38 and add a string value to the `apiKeys` array.
 
 **Note:** 
 When an API key is required you must provide the `key` parameter in the request url. 
@@ -93,7 +92,7 @@ All items in the `apiKeys` array must be valid strings.
 
 ##### Custom Port Number #####
 To update the port number your api is running on:
-1. Go to line 22 (22:17) and change the `null` value to your port number.
+1. Go to line 55 and change the `null` value to your port number.
 
 If you want to reset it set the changed port number to `null`
 
@@ -116,3 +115,12 @@ If you would like to enable logging requests to console additionaly set `LogToCo
 If yo uwould like to log requests in a file set `LogToFile` to true.
 
 Default logging file is `./logs/logs.txt`. Logging includes the date of the request, IP of the requester. Type of data requested. Data requested. Data returned.
+
+
+##### Ip Whitelisting #####
+To add a whitelisted IP:
+1. Go to line 29 and set `forceWhitelistedIps` to `true`.
+2. Go to line 30 and add a string to the array.
+
+*Note:* 
+`localhost` and `127.0.0.1` should be represented as `::1`.
