@@ -58,7 +58,7 @@ When running `index.js` the API will start and listen at port: `7000` by default
 
 #### Networking ####
 
-When starting, additional port forwarding may be required as to allow access from other computers. If required port forward to port 7000. Additionally you may need to change the IP address if chosen to host on different machine.
+When starting, additional port forwarding may be required as to allow access from computers outside your local network. Additionally you may need to change the IP address if chosen to host on different machine.
 
 #### All Query Parameters ####
 
@@ -83,8 +83,8 @@ data | string | The data fetched.
 ##### API Keys #####
 To enable and require API keys:
 
-1. Go to line 37 and set the constant value `requireKey` to true.
-2. Then go to line 38 and add a string value to the `apiKeys` array.
+1. Go to line 8 in the `main.json` config file, set the boolean `requireKey` to `true`;
+2. Go to line 9 in the `main.json` config file, add a string to the `apiKeys` array.
 
 **Note:** 
 When an API key is required you must provide the `key` parameter in the request url. 
@@ -92,9 +92,7 @@ All items in the `apiKeys` array must be valid strings.
 
 ##### Custom Port Number #####
 To update the port number your api is running on:
-1. Go to line 55 and change the `null` value to your port number.
-
-If you want to reset it set the changed port number to `null`
+1. Go to line 10 in the `main.json` config file, set `7000` to your desired port.
 
 ##### Custom Error Codes #####
 To set custom error messages do the following:
@@ -119,8 +117,8 @@ Default logging file is `./logs/logs.txt`. Logging includes the date of the requ
 
 ##### Ip Whitelisting #####
 To add a whitelisted IP:
-1. Go to line 29 and set `forceWhitelistedIps` to `true`.
-2. Go to line 30 and add a string to the array.
+1. Go to line 6 in the `main.json` config file, set the boolean `forceIpWhitelisting` to `true`.
+2. Go to line 7 in the `main.json` config file, set the boolean add a string to the `whitelistedIps` array.
 
 *Note:* 
-`localhost` and `127.0.0.1` should be represented as `::1`.
+`localhost` or `127.0.0.1` should be represented as `::1`.
