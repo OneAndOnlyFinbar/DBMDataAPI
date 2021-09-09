@@ -16,53 +16,17 @@ try {(JSON.parse(JSON.stringify(require('../data/players.json'))));} catch (erro
 const errors = require('./configs/errors.json');
 const config = require('./configs/main.json');
 
-//################################################################################################################################################
-//##################################################################CONFIGUTAION##################################################################
-//################################################################################################################################################
-
-//################################################################################################################################################
-//#################################################################WHITELISTED IPS################################################################
-//################################################################################################################################################
-//To limit requests to certain IPs change the value of the constant below to true then add a string to the WHITELISTED_IPS array.
-//If you are hosting the bot on the same machine the data API is using use  ::1  for your IP address.
-
-const forceWhitelistedIps = false;
-const WHITELISTED_IPS = [];
-
-//################################################################################################################################################
-//####################################################################API KEYS####################################################################
-//################################################################################################################################################
-//To require the usage of API Keys change the value of the constant below to true then add a string to the API_KEYS array.
-
-const requireKey = false;
-const apiKeys = [];
-
-if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(requireKey && !apiKeys || requireKey && apiKeys.length === 0 && config.ExitOnCriticalError === false){
-    console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
+//Api key checks
+if(config.requireKey && !config.apiKeys || config.requireKey && config.apiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(config.requireKey && !config.apiKeys || config.requireKey && config.apiKeys.length === 0 && config.ExitOnCriticalError === false) console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
+for(let i = 0; i < config.apiKeys.length; i++){
+    if(typeof config.apiKeys[i] !== 'string' && config.ExitOnCriticalError) return console.log('WARNING: All API keys must be a type of string.');else if(typeof config.apiKeys[i] !== 'string' && config.ExitOnCriticalError === false) console.log('WARNING: All API keys must be a type of string, Continuing');
 }
-
-for(let i = 0; i < apiKeys.length; i++){
-    if(typeof apiKeys[i] !== 'string' && config.ExitOnCriticalError) return console.log('WARNING: All API keys must be a type of string.');else if(typeof apiKeys[i] !== 'string' && config.ExitOnCriticalError === false){
-        console.log('WARNING: All API keys must be a type of string, Continuing');
-    }
-}
-
-//################################################################################################################################################
-//######################################################################CUSTOM PORT###############################################################
-//################################################################################################################################################
-//To set a custom port number set the null value below to the desired port.
-
-const port = null || 7000;
-
-if(!port && config.ExitOnCriticalError) return console.log('WARNING: No port number specified.');else if(!port && config.ExitOnCriticalError === false){
-    console.log('WARNING: No port number specified, Continuing');
-}
-
-//################################################################################################################################################
+//Port number check
+if(!config.apiPort && config.ExitOnCriticalError) return console.log('WARNING: No port number specified.');else if(!config.apiPort && config.ExitOnCriticalError === false) console.log('WARNING: No port number specified, Continuing');
 
 app.get('/api', async function (req, res) {
     //Check API key validity
-    if (requireKey === true && !apiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
+    if (config.requireKey === true && !config.apiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
 
     //Check If IP is whitelisted
     let ipCheck = req.headers['x-forwarded-for'] || req.ip || null;
@@ -70,7 +34,8 @@ app.get('/api', async function (req, res) {
     //Check and correct for subnet prefix
     if(ipCheck.startsWith('::ffff:')) ipCheck = ipCheck.slice(7);
 
-    if(forceWhitelistedIps && !WHITELISTED_IPS.includes(ipCheck)){
+    if(config.forceIpWhitelisting && !config.whitelistedIps.includes(ipCheck)){
+        console.log(ipCheck);
         return res.json({success: false, error: errors['0009']['error_text']});
     }
 
@@ -98,7 +63,7 @@ app.get('/api', async function (req, res) {
 
         let log = `${new Date().toLocaleString()} - Global data ${data} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
-        if (enableLogger === true) await logManager(log);
+        if (enableLogger) await logManager(log);
 
         return res.json({success : true, data : foundData.toString()});
     }
@@ -113,7 +78,7 @@ app.get('/api', async function (req, res) {
 
         let log = `${new Date().toLocaleString()} - Server data ${data} in server ${server} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
-        if (enableLogger === true) await logManager(log);
+        if (enableLogger) await logManager(log);
 
         return res.json({success : true, data : foundData.toString()});
     }
@@ -128,7 +93,7 @@ app.get('/api', async function (req, res) {
 
         let log = `${new Date().toLocaleString()} - Member data ${data} for member ${member} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
-        if (enableLogger === true) await logManager(log);
+        if (enableLogger) await logManager(log);
 
         return res.json({success : true, data : foundData.toString()});
     }
@@ -137,7 +102,7 @@ app.get('/api', async function (req, res) {
     async function logManager(data) {
         if(config.LogToConsole) console.log(data);
 
-        if(config.LogToFile === true){
+        if(config.LogToFile){
             fs.appendFile('./logs/logs.txt', (`\n` + data), function (err) {
                 if(err) console.log(`WARNING: Error while appending to log file. Err: \n ${err}`);
             })
@@ -146,5 +111,5 @@ app.get('/api', async function (req, res) {
 })
 
 //Start API
-app.listen(port);
-console.log(`Starting DBM Data API at port ${port}`);
+app.listen(config.apiPort);
+console.log(`Starting DBM Data API at port ${config.apiPort}`);
