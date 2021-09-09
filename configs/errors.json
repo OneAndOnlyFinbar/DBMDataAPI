@@ -32,7 +32,7 @@
     "error_text" : "Couldn't find member data: "
   },
   "0009" : {
-    "_COMMENT" : "If IP isnt whitelisted.",
+    "_COMMENT" : "If IP isn't whitelisted.",
     "error_text" : "Your IP is not whitelisted."
   }
 }

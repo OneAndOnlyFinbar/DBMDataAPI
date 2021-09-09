@@ -2,5 +2,10 @@
   "ExitOnCriticalError" : false,
   "EnableLogger" : true,
   "LogToConsole" : true,
-  "LogToFile" : true
+  "LogToFile" : true,
+  "forceIpWhitelisting" : false,
+  "whitelistedIps" : [],
+  "requireKey" : false,
+  "apiKeys" : [],
+  "apiPort" : 7000
 }
