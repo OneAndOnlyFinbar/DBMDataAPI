@@ -1,11 +1,11 @@
 {
-  "ExitOnCriticalError" : false,
-  "EnableLogger" : true,
-  "LogToConsole" : true,
-  "LogToFile" : true,
-  "forceIpWhitelisting" : false,
-  "whitelistedIps" : [],
-  "requireKey" : false,
-  "apiKeys" : [],
-  "apiPort" : 7000
-}
+    "ExitOnCriticalError" : true,
+    "EnableLogger" : true,
+    "LogToConsole" : true,
+    "LogToFile" : true,
+    "ForceIpWhitelisting" : false,
+    "WhitelistedIps" : [],
+    "RequireKey" : false,
+    "ApiKeys" : [],
+    "ApiPort" : 7000
+  }
