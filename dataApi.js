@@ -17,16 +17,16 @@ const errors = require('./configs/errors.json');
 const config = require('./configs/main.json');
 
 //Api key checks
-if(config.requireKey && !config.apiKeys || config.requireKey && config.apiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(config.requireKey && !config.apiKeys || config.requireKey && config.apiKeys.length === 0 && config.ExitOnCriticalError === false) console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
-for(let i = 0; i < config.apiKeys.length; i++){
-    if(typeof config.apiKeys[i] !== 'string' && config.ExitOnCriticalError) return console.log('WARNING: All API keys must be a type of string.');else if(typeof config.apiKeys[i] !== 'string' && config.ExitOnCriticalError === false) console.log('WARNING: All API keys must be a type of string, Continuing');
+if(config.RequireKey && !config.ApiKeys || config.RequireKey && config.ApiKeys.length === 0 && config.ExitOnCriticalError) return console.log('WARNING: Requiring API keys without any valid API keys.');else if(config.RequireKey && !config.ApiKeys || config.RequireKey && config.ApiKeys.length === 0 && config.ExitOnCriticalError === false) console.log('WARNING: Requiring API keys without any valid API keys, Continuing');
+for(let i = 0; i < config.ApiKeys.length; i++){
+    if(typeof config.ApiKeys[i] !== 'string' && config.ExitOnCriticalError) return console.log('WARNING: All API keys must be a type of string.');else if(typeof config.ApiKeys[i] !== 'string' && config.ExitOnCriticalError === false) console.log('WARNING: All API keys must be a type of string, Continuing');
 }
 //Port number check
-if(!config.apiPort && config.ExitOnCriticalError) return console.log('WARNING: No port number specified.');else if(!config.apiPort && config.ExitOnCriticalError === false) console.log('WARNING: No port number specified, Continuing');
+if(!config.ApiPort && config.ExitOnCriticalError) return console.log('WARNING: No port number specified.');else if(!config.ApiPort && config.ExitOnCriticalError === false) console.log('WARNING: No port number specified, Continuing');
 
 app.get('/api', async function (req, res) {
     //Check API key validity
-    if (config.requireKey === true && !config.apiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
+    if (config.RequireKey === true && !config.ApiKeys.includes(req.query.key)) return res.json({success: false, error: errors['0001']['error_text']});
 
     //Check If IP is whitelisted
     let ipCheck = req.headers['x-forwarded-for'] || req.ip || null;
@@ -34,7 +34,7 @@ app.get('/api', async function (req, res) {
     //Check and correct for subnet prefix
     if(ipCheck.startsWith('::ffff:')) ipCheck = ipCheck.slice(7);
 
-    if(config.forceIpWhitelisting && !config.whitelistedIps.includes(ipCheck)){
+    if(config.ForceIpWhitelisting && !config.WhitelistedIps.includes(ipCheck)){
         console.log(ipCheck);
         return res.json({success: false, error: errors['0009']['error_text']});
     }
@@ -111,5 +111,5 @@ app.get('/api', async function (req, res) {
 })
 
 //Start API
-app.listen(config.apiPort);
-console.log(`Starting DBM Data API at port ${config.apiPort}`);
+app.listen(config.ApiPort);
+console.log(`Starting DBM Data API at port ${config.ApiPort}`);
