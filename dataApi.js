@@ -67,35 +67,49 @@ app.get('/api', async function (req, res) {
 
         return res.json({success : true, data : foundData.toString()});
     }
+    
+    switch(queryDataType){
+        case 'global':
+            const raw = JSON.parse(fs.readFileSync('../data/globals.json', 'utf8'));
+            if (!raw[data]) return res.json({success: false, error: errors['0006']['error_text'] + data})
 
-    //Server data
-    if (queryDataType === 'server') {
-        const raw = JSON.parse(fs.readFileSync('../data/servers.json', 'utf8'));
-        if (!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
+            const foundData = raw[data];
+            if (!foundData) return res.json({success: false, error: errors['0006']['error_text'] + data})
 
-        const foundData = raw[server][data];
-        if (!foundData) return res.json({success: false, error: errors['0007']['error_text'] + ': ' + data + ' in server: ' + server});
+            let log = `${new Date().toLocaleString()} - Global data ${data} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
-        let log = `${new Date().toLocaleString()} - Server data ${data} in server ${server} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+            if (enableLogger) await logManager(log);
 
-        if (enableLogger) await logManager(log);
+            return res.json({success : true, data : foundData.toString()});
+            break;
+            
+        case 'server':
+            const raw = JSON.parse(fs.readFileSync('../data/servers.json', 'utf8'));
+            if (!raw[server]) return res.send('{"success" : false, "error" :' + `"${errors['0007']['error_text']}: ${data} in server: ${server}"}`);
 
-        return res.json({success : true, data : foundData.toString()});
-    }
+            const foundData = raw[server][data];
+            if (!foundData) return res.json({success: false, error: errors['0007']['error_text'] + ': ' + data + ' in server: ' + server});
 
-    //Member data
-    if (queryDataType === 'member') {
-        const raw = JSON.parse(fs.readFileSync('../data/players.json', 'utf8'));
-        if (!raw[member]) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
+            let log = `${new Date().toLocaleString()} - Server data ${data} in server ${server} accessed from ${ip}. Returned value: ${foundData.toString()}`;
 
-        const foundData = raw[member][data];
-        if (!foundData) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
+            if (enableLogger) await logManager(log);
 
-        let log = `${new Date().toLocaleString()} - Member data ${data} for member ${member} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+            return res.json({success : true, data : foundData.toString()});
+            break;
+            
+        case 'member':
+            const raw = JSON.parse(fs.readFileSync('../data/players.json', 'utf8'));
+            if (!raw[member]) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
 
-        if (enableLogger) await logManager(log);
+            const foundData = raw[member][data];
+            if (!foundData) return res.json({success: false, error: errors['0008']['error_text'] + ': ' + data + ' for member: ' + member});
 
-        return res.json({success : true, data : foundData.toString()});
+            let log = `${new Date().toLocaleString()} - Member data ${data} for member ${member} accessed from ${ip}. Returned value: ${foundData.toString()}`;
+
+            if (enableLogger) await logManager(log);
+
+            return res.json({success : true, data : foundData.toString()});
+            break;
     }
 
     //Log manager function. Do not directly edit this, instead enable/disable in configs/main.json
